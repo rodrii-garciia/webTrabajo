@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juego IPE</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+  <header id="top-bar" aria-label="Barra superior">
+    <div id="top-left">
+      <button id="back-to-rules" class="link hidden" type="button">📘 Normas</button>
+    </div>
+
+    <div id="top-right">
+      <span id="timer" aria-live="polite">00:00</span>
+    </div>
+  </header>
+
+  <main id="main" aria-live="polite">
+    <section id="screen"></section>
+  </main>
+
+  <footer id="controls" aria-label="Controles"></footer>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>

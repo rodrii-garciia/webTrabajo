@@ -1,0 +1,216 @@
+{
+  "preguntas": [
+    {
+      "texto": "¿Nacimiento conceptual del derecho del trabajo?",
+      "opciones": [
+        "En el siglo XVIII, con las primeras formulaciones teoricas como \"derecho al trabajo\"",
+        "Finales del siglo XIX, durante la Revolución Industrial y las primeras leyes protectoras.",
+        "En el siglo XIX, con las luchas obreras por la reducción de la jornada laboral",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 0
+    },
+    {
+      "texto": "En 1981 se publico:",
+      "opciones": [
+        "Ley del Estatuto de los trabajadores",
+        "Estatuto de los trabajadores",
+        "Ley basica del empleo",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 3
+    },
+    {
+      "texto": "Los trabajos por cuenta propia:",
+      "opciones": [
+        "Se regulan por el Art 1.2 ET",
+        "Es una relacion laboral especial",
+        "No se regulan por normas laborales",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 2
+    },
+    {
+      "texto": "Las relaciones laborales:",
+      "opciones": [
+        "Son por cuenta ajena",
+        "Se regula en el Art 1.1 ET",
+        "Existe un jefe",
+        "Todas las anteriores"
+      ],
+      "correcta": 3
+    },
+    {
+      "texto": "Los minusválidos en centros especiales de empleo:",
+      "opciones": [
+        "Puede no ser retribuidos",
+        "Se regulan por el derecho laboral",
+        "Se regulan en el Art 1.1 ET",
+        "Todas las anteriores"
+      ],
+      "correcta": 1
+    },
+    {
+      "texto": "Los deportistas profesionales:",
+      "opciones": [
+        "No reciben retribuciones fijas",
+        "Tiene una relacion no laboral",
+        "Se regulan por su propia normativa",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 2
+    },
+    {
+      "texto": "Cual de estos es un derecho derivado de la relacion del trabajo:",
+      "opciones": [
+        "Derecho a la negociación colectiva",
+        "Derecho a tener un puesto de trabajo fijo y permanente",
+        "Derecho a la formacion profesional fuera del trabajo",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 3
+    },
+    {
+      "texto": "Los derechos básicos de los trabajadores:",
+      "opciones": [
+        "Están relacionados a los derecho derivados de la relación del trabajo",
+        "Incluye el derecho a la puntualidad en la percepción del salario",
+        "Incluye el derecho de la negociación individual",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 0
+    },
+    {
+      "texto": "Los derechos derivados de la relación del trabajo:",
+      "opciones": [
+        "Incluye la consideración a la respetabilidad del trabajador",
+        "Incluye el derecho de información, consulta y participación en la empresa",
+        "Incluye el derecho a no ser discriminado de manera directa exclusivamente en el empleo",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 0
+    },
+    {
+      "texto": "Los deberes básicos de los trabajadores:",
+      "opciones": [
+        "Incluye lealtad absoluta",
+        "No incluye la no competencia con la actividad de la empresa",
+        "Derivan del contrato de los trabajadores",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 3
+    },
+    {
+      "texto": "En el trabajo:",
+      "opciones": [
+        "Pueden realizar un control audiovisual rutinario",
+        "Pueden realizar un registro de tu vehículo personal",
+        "Pueden pedir grabación en la area del descanso",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 1
+    },
+    {
+      "texto": "El poder disciplinario empresarial:",
+      "opciones": [
+        "Se reglamenta en el Art 57 ET",
+        "Incluye multas de faltas leves prescritas en menos de 10 días",
+        "Incluye sanciones a los trabajadores",
+        "Todas las anteriores"
+      ],
+      "correcta": 2
+    },
+    {
+      "texto": "Los principios de aplicación de las normas laborales:",
+      "opciones": [
+        "Protege a la empresa frente a posibles ambigüedades o inconsistencias en las leyes laborales",
+        "Incluye el principio de In Dubio Pro Operario",
+        "Dice que el empleador mantiene los beneficios anteriores incluso se introducen otras nuevas",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 1
+    },
+    {
+      "texto": "Un contrato:",
+      "opciones": [
+        "Siempre especifica los periodos de prueba",
+        "Puede ser oral si ambas partes se ponen de acuerdo",
+        "Puede tener una duracion de inferior a 4 semanas solo si es oral",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 3
+    }
+  ],
+  "palabrasCalientes": [
+    { "palabra": "Registro", "prohibidas": ["Tiempo", "Entrada", "Salida", "Jornada"] },
+    { "palabra": "Relacion laboral", "prohibidas": ["Trabajo", "Contrato", "Empleado", "Empresa"] },
+    { "palabra": "Teletrabajo", "prohibidas": ["Casa", "Ordenador", "Remoto", "Internet"] },
+    { "palabra": "Ley proteccion de datos", "prohibidas": ["Privacidad", "Información", "Datos", "Seguridad"] },
+    { "palabra": "Servicio", "prohibidas": ["Atención", "Cliente", "Prestación", "Oferta"] },
+    { "palabra": "Enfermedad", "prohibidas": ["Salud", "Síntomas", "Médico", "Tratamiento"] },
+    { "palabra": "Estatuto", "prohibidas": ["Regla", "Ley", "Gobierno", "Cuerpo"] },
+    { "palabra": "Derechos de los trabajadores", "prohibidas": ["Derechos", "Trabajadores", "Responsabilidades", "Dignidad"] },
+    { "palabra": "Sindicato", "prohibidas": ["Trabajadores", "Asociación", "Intereses", "Laborales"] },
+    { "palabra": "Email", "prohibidas": ["Correo", "Electrónico", "Mail", "Buzón"] },
+    { "palabra": "Vigilancia", "prohibidas": ["Cámaras", "Control", "Privacidad", "Inspector"] },
+    { "palabra": "Contrato verbal", "prohibidas": ["Acuerdo", "Hablar", "Obligación", "Partes"] },
+    { "palabra": "Empresario", "prohibidas": ["Empresa", "Actividad económica", "Dirige", "Riesgo"] },
+    { "palabra": "Trabajador", "prohibidas": ["Actividad", "Laboral", "Remuneración", "Dirección"] },
+    { "palabra": "Consentimiento", "prohibidas": ["Acepta", "Voluntaria", "Informada", "Manifestación"] },
+    { "palabra": "Periodo de prueba", "prohibidas": ["Tiempo", "Relación laboral", "Evaluación", "Puesto"] },
+    { "palabra": "Indefinido", "prohibidas": ["Límite", "Duración", "Contrato", "Finalización"] },
+    { "palabra": "Temporal", "prohibidas": ["Duración", "Tiempo", "Inicio", "Fin"] },
+    { "palabra": "Jornada laboral", "prohibidas": ["Tiempo", "Trabajo", "Servicios", "Legal"] },
+    { "palabra": "Indemnización", "prohibidas": ["Compensación", "Económica", "Daño", "Perjuicio"] },
+    { "palabra": "Retribución", "prohibidas": ["Pago", "Trabajo", "Servicio", "Contraprestación"] },
+    { "palabra": "Duración", "prohibidas": ["Tiempo", "Extensión", "Mantiene", "Sucede"] },
+    { "palabra": "Prácticas", "prohibidas": ["Formativo", "Experiencia", "Profesional", "Estudios"] },
+    { "palabra": "Estudios", "prohibidas": ["Aprendizaje", "Conocimientos", "Académico", "Formación"] },
+    { "palabra": "Profesional", "prohibidas": ["Actividad", "Habitual", "Cualificada", "Capacitado"] },
+    { "palabra": "Jefe", "prohibidas": ["Autoridad", "Mando", "Organización", "Subordinados"] },
+    { "palabra": "Trabajo híbrido", "prohibidas": ["Presencial", "Distancia", "Combina", "Modalidad"] },
+    { "palabra": "Impuestos", "prohibidas": ["Tributos", "Obligatorios", "Estado", "Gastos públicos"] },
+    { "palabra": "Entidad", "prohibidas": ["Organización", "Institución", "Unidad", "Bancaria"] },
+    { "palabra": "LinkedIn", "prohibidas": ["Marca personal", "Dani", "Red social", "Capacitación"] },
+    { "palabra": "IRPF", "prohibidas": ["Impuesto", "IVA", "Contrato", "Dinero"] },
+    { "palabra": "Currículum", "prohibidas": ["CV", "Vitae", "Documento", "Foto"] },
+    { "palabra": "Tiempo parcial", "prohibidas": ["Jornada", "Horas", "Completa", "Modalidad"] },
+    { "palabra": "Encargada", "prohibidas": ["Responsabilidad", "Supervisar", "Gestionar", "Organización"] },
+    { "palabra": "Accidente de trabajo", "prohibidas": ["PRL", "Teletrabajar", "Tailandia", "Coche"] },
+    { "palabra": "ETT", "prohibidas": ["Empresa", "Trabajo", "Temporal", "Tiempo"] },
+    { "palabra": "Firmar", "prohibidas": ["Firma", "Documento", "Autorizar", "Conformidad"] },
+    { "palabra": "Documento", "prohibidas": ["CV", "Currículum", "Contrato", "Documentación"] },
+    { "palabra": "Reducción de jornada", "prohibidas": ["Disminución", "Tiempo", "Trabajo", "Relación laboral"] },
+    { "palabra": "Nómina", "prohibidas": ["Retribución", "Salarios", "Deducciones", "Documento"] },
+    { "palabra": "Salario", "prohibidas": ["Retribución", "Dinero", "Nómina", "Económico"] },
+    { "palabra": "Relevo", "prohibidas": ["Sustitución", "Persona", "Puesto", "Función"] },
+    { "palabra": "Baja médica", "prohibidas": ["Incapacidad", "Salud", "Temporal", "Médico"] },
+    { "palabra": "Puesto de trabajo", "prohibidas": ["Funciones", "Tareas", "Responsabilidades", "Organización"] },
+    { "palabra": "Lugar de trabajo", "prohibidas": ["Espacio", "Actividad", "Laboral", "Desarrolla"] },
+    { "palabra": "Vacaciones", "prohibidas": ["Descanso", "Periodo", "Retribuido", "Servicios"] },
+    { "palabra": "Convenio colectivo", "prohibidas": ["Acuerdo", "Trabajadores", "Empleadores", "Condiciones de trabajo"] },
+    { "palabra": "Asociación", "prohibidas": ["Personas", "Organización", "Fin común", "Sin ánimo de lucro"] },
+    { "palabra": "Cláusulas", "prohibidas": ["Letra pequeña", "Escondidas", "Contrato", "Condiciones"] },
+    { "palabra": "Emancipación", "prohibidas": ["Independencia", "Autoridad", "Tutela", "Dependencia"] },
+    { "palabra": "Fraude", "prohibidas": ["Engaño", "Beneficio", "Perjuicio", "Abuso"] },
+    { "palabra": "Normativa", "prohibidas": ["Normas", "Reglas", "Regulan", "Materia"] },
+    { "palabra": "Por cuenta ajena", "prohibidas": ["Servicios", "Dirección", "Organización", "Retribución"] },
+    { "palabra": "Prestaciones", "prohibidas": ["Ayudas", "Beneficios", "Servicios", "Administración"] },
+    { "palabra": "Sector terciario", "prohibidas": ["Economía", "Servicios", "Necesidades", "Prestación"] },
+    { "palabra": "Trabajos familiares", "prohibidas": ["Familiares", "Empresa", "Negocio", "Relación laboral"] },
+    { "palabra": "Derecho a la ocupación efectiva", "prohibidas": ["Derecho", "Tareas", "Puesto", "Actividad"] },
+    { "palabra": "Integridad física", "prohibidas": ["Cuerpo", "Daño", "Agresiones", "Consentimiento"] },
+    { "palabra": "Huelga", "prohibidas": ["Suspensión", "Trabajo", "Colectiva", "Presión"] },
+    { "palabra": "Obligaciones", "prohibidas": ["Deberes", "Compromisos", "Obligada", "Cumplir"] },
+    { "palabra": "Negociación colectiva", "prohibidas": ["Diálogo", "Representantes", "Trabajadores", "Condiciones"] },
+    { "palabra": "Taquillas", "prohibidas": ["Muebles", "Compartimentos", "Almacenamiento", "Objetos personales"] },
+    { "palabra": "Empresa de la competencia", "prohibidas": ["Empresa", "Competir", "Mercado", "Clientes"] },
+    { "palabra": "Participación en la empresa", "prohibidas": ["Intervención", "Decisiones", "Gestión", "Empresa"] },
+    { "palabra": "Normas", "prohibidas": ["Reglas", "Preceptos", "Actuación", "Organización"] },
+    { "palabra": "Judicial", "prohibidas": ["Justicia", "Órganos", "Juzgar", "Actuaciones"] },
+    { "palabra": "Multa", "prohibidas": ["Sanción", "Económica", "Autoridad", "Norma"] },
+    { "palabra": "Descansos", "prohibidas": ["Periodos", "Interrupción", "Actividad", "Recuperación"] },
+    { "palabra": "Negociación", "prohibidas": ["Proceso", "Partes", "Acuerdo", "Diálogo"] },
+    { "palabra": "Promoción", "prohibidas": ["Mejora", "Posición", "Categoría", "Organización"] }
+  ]
+}
