@@ -11,7 +11,7 @@
       "correcta": 0
     },
     {
-      "texto": "En 1981 se publico:",
+      "texto": "En 1981 se publicó:",
       "opciones": [
         "Ley del Estatuto de los trabajadores",
         "Estatuto de los trabajadores",
@@ -61,7 +61,7 @@
       "correcta": 2
     },
     {
-      "texto": "Cual de estos es un derecho derivado de la relacion del trabajo:",
+      "texto": "Cual de estos es un derecho derivado de la relacion del trabajo :",
       "opciones": [
         "Derecho a la negociación colectiva",
         "Derecho a tener un puesto de trabajo fijo y permanente",
@@ -86,7 +86,7 @@
         "Incluye la consideración a la respetabilidad del trabajador",
         "Incluye el derecho de información, consulta y participación en la empresa",
         "Incluye el derecho a no ser discriminado de manera directa exclusivamente en el empleo",
-        "Ninguna de las anteriores"
+        "Solo la opcion 3 es incorrecta"
       ],
       "correcta": 0
     },
@@ -111,12 +111,12 @@
       "correcta": 1
     },
     {
-      "texto": "El poder disciplinario empresarial:",
+      "texto": "El poder disciplinario empresarial :",
       "opciones": [
         "Se reglamenta en el Art 57 ET",
         "Incluye multas de faltas leves prescritas en menos de 10 días",
         "Incluye sanciones a los trabajadores",
-        "Todas las anteriores"
+        "Opcion 1 y 3 son correctas"
       ],
       "correcta": 2
     },
@@ -126,19 +126,179 @@
         "Protege a la empresa frente a posibles ambigüedades o inconsistencias en las leyes laborales",
         "Incluye el principio de In Dubio Pro Operario",
         "Dice que el empleador mantiene los beneficios anteriores incluso se introducen otras nuevas",
-        "Ninguna de las anteriores"
+        "Solo la opcion 1 es incorrecta"
       ],
       "correcta": 1
     },
     {
       "texto": "Un contrato:",
       "opciones": [
-        "Siempre especifica los periodos de prueba",
+        "Puede renovarse manteniendo todo su contenido",
         "Puede ser oral si ambas partes se ponen de acuerdo",
-        "Puede tener una duracion de inferior a 4 semanas solo si es oral",
+        "Puede tener una duracion de inferior a 4 semanas solo si es verbal",
         "Ninguna de las anteriores"
       ],
       "correcta": 3
+    },
+    {
+      "texto": "En un contrato indefinido fijo discontinuo:",
+      "opciones": [
+        "Por su naturaleza discontinua, puede ser oral si la duracion es menor de 4 semanas",
+        "Incluye la especificacion de que la retribucion debe respetar la SMI",
+        "Incluye una comunicación formal para que el trabajador se reincorpore tras un periodo de prueba",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 3
+    },
+    {
+      "texto": "El contrato indefinido causado por una produccion ocasional y previsible:",
+      "opciones": [
+        "Tiene como objetivo atender situaciones ocasionales, previsibles y que tenga una duración reducida y delimitada",
+        "Tiene una indemnización de 12 días de salario por cada año de servicio",
+        "Opcion 1 y 2 son correctas",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 3
+    },
+    {
+      "texto": "Si te realizan un contrato causado por las circunstancia de la produccion ocasionales:",
+      "opciones": [
+        "Debera tener una jornada a tiempo parcial",
+        "Puedes trabajar desde principios de Diciembre (campaña de Navidad) hasta finales de Febreros (Rebajas de Invierno)",
+        "Te deben pagar 6 dias de salario despues de acabar el contrato de medio año",
+        "Ninguna de las opciones anteriores"
+      ],
+      "correcta": 2
+    },
+    {
+      "texto": "Si te realizan un contrato para sustituir a tu amigo:",
+      "opciones": [
+        "Puedes empezar 3 semanas antes de que tu amigo se vaya",
+        "Debera tener una jornada a tiempo completo",
+        "Me deben decir el motivo de la sustitución obligatoriamente y además de forma escrita",
+        "Opcion 1 y 3 son correctas"
+      ],
+      "correcta": 2
+    },
+    {
+      "texto": "El contrato indefinido por sustitución de persona trabajadora:",
+      "opciones": [
+        "No da derecho a indemnización por finalización del contrato",
+        "No existe",
+        "Es a tiempo completo y puedes entrar antes de que la persona sustituida se vaya.",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 1
+    },
+    {
+      "texto": "En un contrato temporal de relevo en el 2020:",
+      "opciones": [
+        "El relevista no eres tu, sino el trabajador al que tu vas a sustituir",
+        "Puede derivarse a un contrato indefinido",
+        "La indemnizacion es opcional",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 1
+    },
+    {
+      "texto": "En un contrato temporal de relevo:",
+      "opciones": [
+        "Puede reducir la jornada hasta el 75%",
+        "Debe incluir una formacion dada por la empresa",
+        "El relevado recibirá una indemnizacion de 12 dias por año de servicio",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 3
+    },
+    {
+      "texto": "El contrato indefinido de alternancia de trabajo:",
+      "opciones": [
+        "Tiene como objetivo obtener alternar varios trabajos",
+        "Tiene un mínimo de 3 meses y un máximo de 2 años",
+        "Debe tener una retribucion mayor que el SMI",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 3
+    },
+    {
+      "texto": "Un contrato formativo en el 2025:",
+      "opciones": [
+        "Debe ser en paralelo a tu formación",
+        "Tiene una indemnizacion de 12 dias por año de servicio",
+        "Puede ser indefinido",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 2
+    },
+    {
+      "texto": "Empiezas un contrato en alternancia con el trabajo el 2025:",
+      "opciones": [
+        "Puedo trabajar 6h de Lunes a Viernes en mi primer año",
+        "Debe tener un mínimo de 3 meses y máximo de 2 años",
+        "Puedo recibir un retribución del 65% el primer año respecto a lo fijado en el convenio colectivo",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 2
+    },
+    {
+      "texto": "El SMI:",
+      "opciones": [
+        "Son las siglas para el Sueldo Medio Interpersonal",
+        "En los contratos para la obtención de la práctica profesional, la retribución es igual al SMI",
+        "La opcion 1 y 2 son correctas",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 3
+    },
+    {
+      "texto": "El contrato para la obtención de la práctica profesional:",
+      "opciones": [
+        "Debe tener una retribución igual o mayor al contrato en alternancia con el trabajo",
+        "Puede haber pasado más de 5 años desde la finalización de tus estudios",
+        "La opción 1 y 2 son correctas",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 2
+    },
+    {
+      "texto": "Acabo de obtener el título de FP superior de DAW y no pienso estudiar de nuevo:",
+      "opciones": [
+        "Puedo firmar un contrato formativo con una duración de 8 meses",
+        "Puedo firmar un contrato que su retribucion tenga una proporción del 0.5 respecto al SMI",
+        "Puedo firmar un contrato con una EET sin indemnización",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 0
+    },
+    {
+      "texto": "Firmo un contrato a tiempo parcial con McDonalds",
+      "opciones": [
+        "Mi jornada diaria puede ser de 8:00-14:00 y 18:00-21:00",
+        "Puedo realizar horas extraordinarias",
+        "Puedo tener otro contrato a tiempo parcial con Burger King",
+        "NInguna de las anteriores"
+      ],
+      "correcta": 1
+    },
+    {
+      "texto": "Las ETT:",
+      "opciones": [
+        "Pueden realizar contratos de trabajos peligrosos y nocivos",
+        "Deben realizar contratos temporales",
+        "Significa Empresa Temporales De Teletrabajo",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 0
+    },
+    {
+      "texto": "Como abogado:",
+      "opciones": [
+        "Mi contrato puede ser en alternancia con el trabajo siempre que mi retribución sea mayor al 55% respecto a la fijada en el convenio colectivo",
+        "Estoy bajo la normativa del art. 2 ET",
+        "Mi contrato puedo ser temporal de relevo si el relevado reduce su jornada un 75%",
+        "Ninguna de las anteriores"
+      ],
+      "correcta": 1
     }
   ],
   "palabrasCalientes": [

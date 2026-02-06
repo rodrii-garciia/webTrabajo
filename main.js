@@ -1,4 +1,4 @@
-const ROUND_SECONDS = 210;
+const ROUND_SECONDS = 180;
 const BOUNCE_ONE_SECONDS = 20;
 const BOUNCE_TWO_SECONDS = 10;
 const TOTAL_PRINCIPAL_ROUNDS = 6;
@@ -20,8 +20,11 @@ const estados = {
     HUB: "HUB",
     PALABRA: "PALABRA",
     PREGUNTA: "PREGUNTA",
-    REBOTE1: "REBOTE1",
-    REBOTE2: "REBOTE2",
+    REBOTE1_RACE: "REBOTE1_RACE",
+    REBOTE1_READY: "REBOTE1_READY",
+    REBOTE1_PLAY: "REBOTE1_PLAY",
+    REBOTE2_READY: "REBOTE2_READY",
+    REBOTE2_PLAY: "REBOTE2_PLAY",
     INTERMEDIA: "INTERMEDIA",
     RANKING: "RANKING",
 };
@@ -54,6 +57,9 @@ const game = {
     lastOutcomeMessage: "",
     lastOutcomeTeam: "",
     lastOutcomePoints: 0,
+    devKeyStreak: 0,
+    devKeyTimeout: null,
+    devMenuOpen: false,
 };
 
 const dom = {
@@ -78,6 +84,9 @@ function resetLayout() {
 
 function render() {
     resetLayout();
+    if (game.estado !== estados.HUB) {
+        game.devMenuOpen = false;
+    }
 
     switch (game.estado) {
         case estados.WELCOME:
@@ -95,13 +104,25 @@ function render() {
         case estados.PREGUNTA:
             renderPregunta();
             break;
-        case estados.REBOTE1:
+        case estados.REBOTE1_RACE:
             stopMainTimer();
-            renderRebote1();
+            renderRebote1Race();
             break;
-        case estados.REBOTE2:
+        case estados.REBOTE1_READY:
             stopMainTimer();
-            renderRebote2();
+            renderRebote1Ready();
+            break;
+        case estados.REBOTE1_PLAY:
+            stopMainTimer();
+            renderRebote1Play();
+            break;
+        case estados.REBOTE2_READY:
+            stopMainTimer();
+            renderRebote2Ready();
+            break;
+        case estados.REBOTE2_PLAY:
+            stopMainTimer();
+            renderRebote2Play();
             break;
         case estados.INTERMEDIA:
             renderIntermedia();
@@ -119,12 +140,15 @@ function renderWelcome() {
     dom.timer.classList.add("hidden");
 
     dom.screen.innerHTML = `
-    <h1>Bienvenidos</h1>
-    <p class="subtitle">Preparad los equipos para empezar la partida.</p>
-    <input placeholder="Equipo 1" maxlength="40" />
-    <input placeholder="Equipo 2" maxlength="40" />
-    <input placeholder="Equipo 3" maxlength="40" />
-    <div id="error" class="welcome-error"></div>
+    <div class="welcome-card">
+      <h1><span class="welcome-title">¡Bienvenidos!</span></h1>
+      <p class="subtitle">Preparad los equipos para empezar la partida.</p>
+      <div class="dev-badge">Por David Wey, David López y Rodrigo García</div>
+      <input placeholder="Equipo 1" maxlength="40" />
+      <input placeholder="Equipo 2" maxlength="40" />
+      <input placeholder="Equipo 3" maxlength="40" />
+      <div id="error" class="welcome-error"></div>
+    </div>
   `;
 
     const continueBtn = addButton("Siguiente", "blue");
@@ -164,17 +188,16 @@ function renderRules() {
     dom.timer.classList.add("hidden");
 
     dom.screen.innerHTML = `
-    <h2>Normas del juego</h2>
+    <h2 class="rules-title">Normas del juego</h2>
     <div class="rules-grid">
       <article class="rule-card">
         <h3>⏱️ Rondas</h3>
-        <p>Cada equipo juega como principal durante <strong>3:30</strong>.</p>
+        <p>Cada equipo juega como principal durante <strong>3:00</strong>.</p>
         <p>Se completan <strong>2 superrondas</strong> (6 turnos principales en total).</p>
       </article>
       <article class="rule-card">
         <h3>🔥 Palabra caliente</h3>
         <p>✔ Correcta: <strong>+2</strong></p>
-        <p>✖ Incorrecta: <strong>0</strong></p>
         <p>🚨 Trampa: <strong>−5</strong></p>
       </article>
       <article class="rule-card">
@@ -203,14 +226,21 @@ function renderHub() {
     dom.screen.classList.add("hub");
 
     const principal = equipos[game.equipoPrincipal];
-    const secundarios = equipos.filter((_, idx) => idx !== game.equipoPrincipal);
+    const secundarios = equipos
+        .map((equipo, idx) => ({ equipo, idx }))
+        .filter(({ idx }) => idx !== game.equipoPrincipal);
 
     dom.screen.innerHTML = `
     <p class="badge">Superronda ${Math.floor(game.principalRoundsPlayed / 3) + 1} · Turno ${game.principalRoundsPlayed + 1}/${TOTAL_PRINCIPAL_ROUNDS}</p>
     <h2>${principal.nombre} (Principal)</h2>
-    <p class="principal-score">Puntos: ${principal.puntos}</p>
+    <p class="principal-score">Puntos: <strong data-team-points="${game.equipoPrincipal}">${principal.puntos}</strong></p>
     <hr>
-    ${secundarios.map((equipo) => `<p>${equipo.nombre}: ${equipo.puntos}</p>`).join("")}
+    ${secundarios
+        .map(
+            ({ equipo, idx }) =>
+                `<p>${equipo.nombre}: <strong data-team-points="${idx}">${equipo.puntos}</strong></p>`,
+        )
+        .join("")}
   `;
 
     addButton("🔥 Palabra caliente", "green", () => {
@@ -222,6 +252,10 @@ function renderHub() {
         startMainTimer();
         setState(estados.PREGUNTA);
     });
+
+    if (game.devMenuOpen) {
+        openDevMenu();
+    }
 }
 
 function renderPalabra() {
@@ -233,9 +267,17 @@ function renderPalabra() {
     const principal = equipos[game.equipoPrincipal];
 
     dom.screen.innerHTML = `
-    <h2>${principal.nombre}</h2>
-    <div class="palabra-objetivo">${palabra.palabra}</div>
-    <div class="prohibidas">🚫 ${palabra.prohibidas.join(", ")}</div>
+    <div class="question-head">
+      <p class="state-chip">Palabra caliente</p>
+      <h2 class="team-focus">${principal.nombre}</h2>
+    </div>
+    <article class="question-card fill-card">
+      <div class="palabra-objetivo">${palabra.palabra}</div>
+      <div class="prohibidas-header">🚫 Palabras prohibidas</div>
+      <div class="prohibidas-list">
+        ${palabra.prohibidas.map((p) => `<span>• ${p}</span>`).join("")}
+      </div>
+    </article>
   `;
 
     addButton("✔ Correcta (+2)", "green", () => {
@@ -243,9 +285,6 @@ function renderPalabra() {
     });
     addButton("🚨 Trampa (−5)", "purple", () => {
         resolveResultado(principal.nombre, `ha hecho trampa y pierde ${Math.abs(POINTS.PALABRA_TRAMPA)} puntos.`, POINTS.PALABRA_TRAMPA);
-    });
-    addButton("✖ Incorrecta", "red", () => {
-        resolveResultado(principal.nombre, "no ha obtenido puntos en “Palabra caliente”.", 0);
     });
 }
 
@@ -301,25 +340,26 @@ function renderPregunta() {
         game.reboteTeams = equipos.map((_, idx) => idx).filter((idx) => idx !== game.equipoPrincipal);
         game.reboteCurrentTeam = null;
         game.reboteRaceWinner = null;
-        setState(estados.REBOTE1);
+        setState(estados.REBOTE1_RACE);
     });
 }
 
-function renderRebote1() {
+function renderRebote1Race() {
     dom.screen.classList.add("rebote");
     const leftTeam = game.reboteTeams[0];
     const rightTeam = game.reboteTeams[1];
 
     dom.screen.innerHTML = `
     <div class="rebote-head">
-      <h2>REBOTE 1</h2>
-      <span id="rebote-timer" class="timer-pill">20s</span>
+      <h2>Equipos compiten por el rebote</h2>
+      <span class="timer-pill">20s</span>
     </div>
-    <article class="event-card danger">
+    <article class="event-card danger fill-card">
       <h3>${game.lastOutcomeTeam}</h3>
       <p>${game.lastOutcomeMessage}</p>
       <p class="points-delta">${formatDelta(game.lastOutcomePoints)}</p>
     </article>
+    <p id="race-status" class="race-status">Pulsa primero para ganar el rebote.</p>
     <div class="duel-grid">
       <article class="duel-card">
         <h4>${equipos[leftTeam].nombre}</h4>
@@ -330,24 +370,7 @@ function renderRebote1() {
         <p>Pulsa <kbd>Enter NumPad</kbd></p>
       </article>
     </div>
-    <p id="race-status" class="race-status">Esperando quién pulsa primero…</p>
-    <article class="question-card">
-      <h3>${game.preguntaActual.texto}</h3>
-    </article>
-    <div class="options-wrap options-wrap-lg">
-      ${renderBlockedOptions()}
-    </div>
-    <p id="selection-status" class="selection-status">Primero gana el rebote y luego valida su respuesta.</p>
-  `;
-
-    bindReboteOptions(false);
-    startBounceTimer(BOUNCE_ONE_SECONDS, () => {
-        game.reboteCurrentTeam = rightTeam;
-        game.lastOutcomeTeam = equipos[rightTeam].nombre;
-        game.lastOutcomePoints = 0;
-        game.lastOutcomeMessage = `Tiempo agotado en Rebote 1. Pasa al Rebote 2 para ${equipos[rightTeam].nombre}.`;
-        setState(estados.REBOTE2);
-    });
+      `;
 
     const onRaceKey = (event) => {
         if (game.reboteRaceWinner !== null) return;
@@ -361,49 +384,101 @@ function renderRebote1() {
         }
 
         game.reboteCurrentTeam = game.reboteRaceWinner;
-        const currentName = equipos[game.reboteCurrentTeam].nombre;
-        document.getElementById("race-status").textContent = `${currentName} ha ganado el rebote. Selecciona opción y valida.`;
-        bindReboteOptions(true);
-        controlsForReboteValidation();
+        game.lastOutcomeTeam = equipos[game.reboteCurrentTeam].nombre;
+        game.lastOutcomePoints = 0;
+        game.lastOutcomeMessage = `${game.lastOutcomeTeam} ha ganado el rebote. Tiene 20 segundos para responder.`;
         window.removeEventListener("keydown", onRaceKey);
+        setState(estados.REBOTE1_READY);
     };
 
     window.addEventListener("keydown", onRaceKey);
     game.reboteRaceCleanup = () => window.removeEventListener("keydown", onRaceKey);
 }
 
-function renderRebote2() {
+function renderRebote1Ready() {
     dom.screen.classList.add("rebote");
-    if (game.reboteCurrentTeam === null) {
-        game.reboteCurrentTeam = game.reboteTeams[1] ?? game.reboteTeams[0];
-    }
+    dom.screen.innerHTML = `
+    <h2 class="rebote-title">REBOTE 1</h2>
+    <article class="event-card info fill-card">
+      <p class="rebote-message">${game.lastOutcomeMessage}</p>
+      <p class="points-delta">Rebote 1 · 20s</p>
+    </article>
+  `;
 
+    addButton("Continuar", "blue", () => setState(estados.REBOTE1_PLAY));
+}
+
+function renderRebote1Play() {
+    dom.screen.classList.add("rebote");
     dom.screen.innerHTML = `
     <div class="rebote-head">
-      <h2>REBOTE 2</h2>
-      <span id="rebote-timer" class="timer-pill">10s</span>
+      <h2>REBOTE 1</h2>
+      <span id="rebote-timer" class="timer-pill">20s</span>
     </div>
-    <article class="event-card info">
-      <h3>${equipos[game.reboteCurrentTeam].nombre}</h3>
-      <p>${game.lastOutcomeMessage}</p>
-      <p class="points-delta">Turno activo</p>
-    </article>
     <article class="question-card">
       <h3>${game.preguntaActual.texto}</h3>
     </article>
     <div class="options-wrap options-wrap-lg">
       ${renderBlockedOptions()}
     </div>
-    <p id="selection-status" class="selection-status">Debes validar antes de que termine el tiempo.</p>
+    <p id="selection-status" class="selection-status">Selecciona una opción y valida.</p>
+  `;
+
+    bindReboteOptions(true);
+    controlsForReboteValidation();
+
+    startBounceTimer(BOUNCE_ONE_SECONDS, () => {
+        const teamName = equipos[game.reboteCurrentTeam].nombre;
+        equipos[game.reboteCurrentTeam].puntos += POINTS.REBOTE_1_INCORRECTA;
+        game.lastOutcomeTeam = teamName;
+        game.lastOutcomePoints = POINTS.REBOTE_1_INCORRECTA;
+        game.lastOutcomeMessage = `${teamName} no respondió a tiempo y pierde ${Math.abs(POINTS.REBOTE_1_INCORRECTA)} puntos. Pasa al Rebote 2.`;
+        const otherTeam = game.reboteTeams.find((idx) => idx !== game.reboteCurrentTeam);
+        game.reboteNivel = 2;
+        game.reboteCurrentTeam = otherTeam;
+        setState(estados.REBOTE2_READY);
+    });
+}
+
+function renderRebote2Ready() {
+    dom.screen.classList.add("rebote");
+    dom.screen.innerHTML = `
+    <h2 class="rebote-title">REBOTE 2</h2>
+    <article class="event-card info fill-card">
+      <p class="rebote-message">${game.lastOutcomeMessage}</p>
+      <p>Tienes 10 segundos para responder.</p>
+      <p class="points-delta">Rebote 2 · 10s</p>
+    </article>
+  `;
+
+    addButton("Continuar", "blue", () => setState(estados.REBOTE2_PLAY));
+}
+
+function renderRebote2Play() {
+    dom.screen.classList.add("rebote");
+    dom.screen.innerHTML = `
+    <div class="rebote-head">
+      <h2>REBOTE 2</h2>
+      <span id="rebote-timer" class="timer-pill">10s</span>
+    </div>
+    <article class="question-card">
+      <h3>${game.preguntaActual.texto}</h3>
+    </article>
+    <div class="options-wrap options-wrap-lg">
+      ${renderBlockedOptions()}
+    </div>
+    <p id="selection-status" class="selection-status">Selecciona una opción y valida.</p>
   `;
 
     bindReboteOptions(true);
     controlsForReboteValidation();
 
     startBounceTimer(BOUNCE_TWO_SECONDS, () => {
-        game.lastOutcomeTeam = equipos[game.reboteCurrentTeam].nombre;
-        game.lastOutcomePoints = 0;
-        game.lastOutcomeMessage = "Tiempo agotado en Rebote 2. No se suman ni restan puntos.";
+        const teamName = equipos[game.reboteCurrentTeam].nombre;
+        equipos[game.reboteCurrentTeam].puntos += POINTS.REBOTE_2_INCORRECTA;
+        game.lastOutcomeTeam = teamName;
+        game.lastOutcomePoints = POINTS.REBOTE_2_INCORRECTA;
+        game.lastOutcomeMessage = `${teamName} no respondió a tiempo y pierde ${Math.abs(POINTS.REBOTE_2_INCORRECTA)} puntos.`;
         setState(estados.INTERMEDIA);
     });
 }
@@ -449,8 +524,7 @@ function renderIntermedia() {
     dom.screen.classList.add("intermedia");
     dom.screen.innerHTML = `
     <h2>Resultado de la jugada</h2>
-    <article class="event-card success">
-      <h3>${game.lastOutcomeTeam}</h3>
+    <article class="event-card ${getOutcomeClass(game.lastOutcomePoints)} fill-card">
       <p class="outcome">${game.lastOutcomeMessage}</p>
       <p class="points-delta">${formatDelta(game.lastOutcomePoints)}</p>
     </article>
@@ -546,6 +620,82 @@ function stopBounceTimer() {
     }
 }
 
+function handleDevKey(event) {
+    if (game.estado !== estados.HUB || game.devMenuOpen) {
+        return;
+    }
+
+    if (event.code !== "KeyD") {
+        game.devKeyStreak = 0;
+        return;
+    }
+
+    game.devKeyStreak += 1;
+    if (game.devKeyTimeout) clearTimeout(game.devKeyTimeout);
+    game.devKeyTimeout = setTimeout(() => {
+        game.devKeyStreak = 0;
+    }, 800);
+
+    if (game.devKeyStreak >= 3) {
+        game.devKeyStreak = 0;
+        openDevMenu();
+    }
+}
+
+function openDevMenu() {
+    if (game.devMenuOpen || game.estado !== estados.HUB) return;
+    game.devMenuOpen = true;
+
+    const overlay = document.createElement("div");
+    overlay.className = "dev-overlay";
+    overlay.innerHTML = `
+    <div class="dev-modal" role="dialog" aria-modal="true">
+      <button class="dev-close" type="button" aria-label="Cerrar">✕</button>
+      <h3>Menú David Wei</h3>
+      <label class="dev-label">
+        Equipo
+        <select class="dev-select">
+          ${equipos.map((equipo, idx) => `<option value="${idx}">${equipo.nombre}</option>`).join("")}
+        </select>
+      </label>
+      <div class="dev-actions">
+        <button type="button" class="dev-btn dev-add" data-delta="1">+1</button>
+        <button type="button" class="dev-btn dev-add" data-delta="3">+3</button>
+        <button type="button" class="dev-btn dev-add" data-delta="5">+5</button>
+        <button type="button" class="dev-btn dev-sub" data-delta="-1">−1</button>
+        <button type="button" class="dev-btn dev-sub" data-delta="-3">−3</button>
+        <button type="button" class="dev-btn dev-sub" data-delta="-5">−5</button>
+      </div>
+    </div>
+  `;
+
+    overlay.querySelector(".dev-close").addEventListener("click", () => {
+        game.devMenuOpen = false;
+        overlay.remove();
+    });
+
+    overlay.querySelector(".dev-actions").addEventListener("click", (event) => {
+        const button = event.target.closest(".dev-btn");
+        if (!button) return;
+        const delta = Number(button.dataset.delta);
+        const select = overlay.querySelector(".dev-select");
+        const teamIndex = Number(select.value);
+        if (!Number.isFinite(delta) || Number.isNaN(teamIndex)) return;
+        equipos[teamIndex].puntos += delta;
+        updateHubScores(teamIndex);
+    });
+
+    dom.screen.appendChild(overlay);
+}
+
+function updateHubScores(teamIndex) {
+    dom.screen
+        .querySelectorAll(`[data-team-points="${teamIndex}"]`)
+        .forEach((node) => {
+            node.textContent = equipos[teamIndex].puntos;
+        });
+}
+
 function resolveResultado(teamName, message, points) {
     stopMainTimer();
     equipos[game.equipoPrincipal].puntos += points;
@@ -582,7 +732,7 @@ function resolveBounce(answerIndex) {
         game.lastOutcomeTeam = teamName;
         game.lastOutcomePoints = POINTS.REBOTE_1_INCORRECTA;
         game.lastOutcomeMessage = `${teamName} falló en Rebote 1 y pierde ${Math.abs(POINTS.REBOTE_1_INCORRECTA)} puntos. Turno de ${equipos[otherTeam].nombre} en Rebote 2.`;
-        setState(estados.REBOTE2);
+        setState(estados.REBOTE2_READY);
         return;
     }
 
@@ -640,10 +790,16 @@ function resetGame() {
     render();
 }
 
+function getOutcomeClass(points) {
+    if (points === POINTS.PALABRA_TRAMPA) return "purple";
+    if (points > 0) return "success";
+    return "danger";
+}
+
 function formatDelta(points) {
     if (points > 0) return `+${points} puntos`;
     if (points < 0) return `${points} puntos`;
-    return "Sin cambio de puntos";
+    return "0 puntos";
 }
 
 function shuffleArray(list) {
@@ -708,4 +864,5 @@ async function initApp() {
 }
 
 dom.backBtn.addEventListener("click", () => setState(estados.RULES));
+document.addEventListener("keydown", handleDevKey);
 initApp();

@@ -71,29 +71,38 @@ body {
     gap: 24px;
     padding: 36px;
     border: 3px solid rgba(255, 255, 255, 0.5);
-    border-radius: var(--radius-l);
+    border-radius: 36px;
     background: rgba(0, 0, 0, 0.18);
     backdrop-filter: blur(2px);
     font-size: clamp(1.1rem, 2.1vw, 2rem);
     min-height: 100%;
+    position: relative;
 }
 
 #screen.fullscreen {
     align-items: center;
     justify-content: center;
     text-align: center;
+    gap: 18px;
 }
 
 .subtitle {
-    opacity: 0.85;
+    opacity: 0.9;
 }
 
 #screen hr {
     border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
-.rules h2 {
+.rules-title {
     text-align: center;
+    align-self: center;
+    width: min(720px, 100%);
+    padding: 14px 18px;
+    border-radius: var(--radius-l);
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 18px 30px rgba(0, 0, 0, 0.35);
 }
 
 .rules-grid {
@@ -153,7 +162,7 @@ body {
 
 kbd {
     border: 1px solid rgba(255, 255, 255, 0.4);
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.18);
     border-radius: 8px;
     padding: 3px 8px;
     font-size: 0.8em;
@@ -202,7 +211,7 @@ button:disabled {
 }
 
 input {
-    width: min(600px, 100%);
+    width: min(720px, 100%);
     border: none;
     border-radius: var(--radius-s);
     padding: 15px;
@@ -212,6 +221,11 @@ input {
 
 .hidden {
     display: none;
+}
+
+.welcome-card input {
+    background: rgba(255, 255, 255, 0.92);
+    color: #0b1b2c;
 }
 
 .welcome-error {
@@ -242,6 +256,186 @@ input {
     padding: 14px 16px;
 }
 
+
+
+
+.welcome-title {
+    display: inline-block;
+    font-size: 1.4em;
+    color: #ffd166;
+    text-shadow: 0 0 12px rgba(255, 209, 102, 0.6);
+}
+
+.welcome-card::before,
+.welcome-card::after {
+    content: "";
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(52, 152, 219, 0.5), transparent 70%);
+    opacity: 0.55;
+}
+
+.welcome-card::before {
+    top: -30px;
+    left: -30px;
+}
+
+.welcome-card::after {
+    bottom: -30px;
+    right: -30px;
+    background: radial-gradient(circle, rgba(155, 89, 182, 0.45), transparent 70%);
+}
+
+.prohibidas-header {
+    font-weight: 700;
+    text-align: center;
+    color: #ffb347;
+}
+
+.rebote-title {
+    text-align: center;
+    font-size: 1.4em;
+    color: #fff0b3;
+}
+
+.race-status {
+    font-size: 1.1em;
+    font-weight: 700;
+    text-align: center;
+    color: #fff5d1;
+}
+
+.event-card.danger,
+.event-card.purple {
+    color: #ffd7d7;
+}
+
+.event-card.purple {
+    color: #f3dbff;
+}
+
+.welcome-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 26px;
+    border-radius: 36px;
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.25), rgba(155, 89, 182, 0.2));
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    text-align: center;
+    width: min(720px, 100%);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 18px 30px rgba(0, 0, 0, 0.35);
+}
+
+.dev-badge {
+    font-size: 0.85em;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.fill-card {
+    flex: 1;
+    width: 100%;
+}
+
+.prohibidas-list {
+    display: grid;
+    gap: 8px;
+    justify-items: center;
+    align-self: center;
+    margin-top: 12px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.rebote-message {
+    font-size: 1.2em;
+    font-weight: 700;
+    text-align: center;
+}
+
+.dev-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 10, 20, 0.55);
+    display: grid;
+    place-items: center;
+    z-index: 10;
+}
+
+.dev-modal {
+    width: min(520px, 92%);
+    background: rgba(9, 24, 40, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 20px;
+    padding: 24px;
+    display: grid;
+    gap: 14px;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.dev-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    border: none;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.dev-subtitle {
+    opacity: 0.85;
+}
+
+.dev-label {
+    display: grid;
+    gap: 6px;
+    font-weight: 600;
+}
+
+.dev-select {
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: none;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.dev-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.dev-btn {
+    border: none;
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-weight: 700;
+    cursor: pointer;
+    color: #fff;
+}
+
+.dev-add {
+    background: rgba(46, 204, 113, 0.85);
+}
+
+.dev-sub {
+    background: rgba(231, 76, 60, 0.85);
+}
 
 .question-head {
     display: flex;
@@ -283,6 +477,7 @@ input {
 .event-card.success {
     border-color: rgba(46, 204, 113, 0.7);
     background: rgba(46, 204, 113, 0.12);
+    color: #ddffe3;
 }
 
 .event-card.danger {
@@ -293,6 +488,11 @@ input {
 .event-card.info {
     border-color: rgba(52, 152, 219, 0.7);
     background: rgba(52, 152, 219, 0.16);
+}
+
+.event-card.purple {
+    border-color: rgba(155, 89, 182, 0.7);
+    background: rgba(155, 89, 182, 0.18);
 }
 
 .points-delta {
