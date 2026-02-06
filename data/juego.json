@@ -337,7 +337,7 @@
     { "palabra": "Tiempo parcial", "prohibidas": ["Jornada", "Horas", "Completa", "Modalidad"] },
     { "palabra": "Encargada", "prohibidas": ["Responsabilidad", "Supervisar", "Gestionar", "Organización"] },
     { "palabra": "Accidente de trabajo", "prohibidas": ["PRL", "Teletrabajar", "Tailandia", "Coche"] },
-    { "palabra": "ETT", "prohibidas": ["Empresa", "Trabajo", "Temporal", "Tiempo"] },
+    { "palabra": "ETT (Empresa de Trabajo Temporal)", "prohibidas": ["Empresa", "Trabajo", "Temporal", "Tiempo"] },
     { "palabra": "Firmar", "prohibidas": ["Firma", "Documento", "Autorizar", "Conformidad"] },
     { "palabra": "Documento", "prohibidas": ["CV", "Currículum", "Contrato", "Documentación"] },
     { "palabra": "Reducción de jornada", "prohibidas": ["Disminución", "Tiempo", "Trabajo", "Relación laboral"] },

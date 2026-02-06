@@ -238,6 +238,7 @@ input {
     font-weight: 700;
     text-align: center;
     color: #ffeaa7;
+    margin-bottom: 6px;
 }
 
 .prohibidas {
@@ -349,9 +350,31 @@ input {
     gap: 8px;
     justify-items: center;
     align-self: center;
-    margin-top: 12px;
     font-weight: 600;
     text-align: center;
+}
+
+.prohibidas-item {
+    width: min(360px, 100%);
+    text-align: center;
+}
+
+.palabra-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 18px;
+}
+
+.rebote-announce {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
 }
 
 .rebote-message {
@@ -394,10 +417,6 @@ input {
     height: 34px;
     cursor: pointer;
     font-size: 1rem;
-}
-
-.dev-subtitle {
-    opacity: 0.85;
 }
 
 .dev-label {

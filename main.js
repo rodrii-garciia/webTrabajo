@@ -262,6 +262,14 @@ function renderPalabra() {
     if (!game.palabraActual) {
         game.palabraActual = drawRandomPalabra();
     }
+    if (!game.palabraActual) {
+        dom.screen.innerHTML = `
+      <h2>No quedan palabras calientes</h2>
+      <p>Has usado todas las palabras disponibles en esta partida.</p>
+    `;
+        addButton("Volver al HUB", "blue", () => setState(estados.HUB));
+        return;
+    }
 
     const palabra = game.palabraActual;
     const principal = equipos[game.equipoPrincipal];
@@ -271,11 +279,11 @@ function renderPalabra() {
       <p class="state-chip">Palabra caliente</p>
       <h2 class="team-focus">${principal.nombre}</h2>
     </div>
-    <article class="question-card fill-card">
+    <article class="question-card fill-card palabra-card">
       <div class="palabra-objetivo">${palabra.palabra}</div>
       <div class="prohibidas-header">🚫 Palabras prohibidas</div>
       <div class="prohibidas-list">
-        ${palabra.prohibidas.map((p) => `<span>• ${p}</span>`).join("")}
+        ${palabra.prohibidas.map((p) => `<span class="prohibidas-item">• ${p}</span>`).join("")}
       </div>
     </article>
   `;
@@ -290,6 +298,14 @@ function renderPalabra() {
 
 function renderPregunta() {
     game.preguntaActual = drawRandomPregunta();
+    if (!game.preguntaActual) {
+        dom.screen.innerHTML = `
+      <h2>No quedan preguntas</h2>
+      <p>Has usado todas las preguntas disponibles en esta partida.</p>
+    `;
+        addButton("Volver al HUB", "blue", () => setState(estados.HUB));
+        return;
+    }
     let selectedOption = null;
     const principal = equipos[game.equipoPrincipal];
 
@@ -399,9 +415,8 @@ function renderRebote1Ready() {
     dom.screen.classList.add("rebote");
     dom.screen.innerHTML = `
     <h2 class="rebote-title">REBOTE 1</h2>
-    <article class="event-card info fill-card">
+    <article class="event-card info fill-card rebote-announce">
       <p class="rebote-message">${game.lastOutcomeMessage}</p>
-      <p class="points-delta">Rebote 1 · 20s</p>
     </article>
   `;
 
@@ -444,10 +459,9 @@ function renderRebote2Ready() {
     dom.screen.classList.add("rebote");
     dom.screen.innerHTML = `
     <h2 class="rebote-title">REBOTE 2</h2>
-    <article class="event-card info fill-card">
+    <article class="event-card info fill-card rebote-announce">
       <p class="rebote-message">${game.lastOutcomeMessage}</p>
       <p>Tienes 10 segundos para responder.</p>
-      <p class="points-delta">Rebote 2 · 10s</p>
     </article>
   `;
 
@@ -818,14 +832,14 @@ function initPools() {
 
 function drawRandomPregunta() {
     if (game.preguntaPool.length === 0) {
-        game.preguntaPool = shuffleArray(preguntas);
+        return null;
     }
     return game.preguntaPool.pop();
 }
 
 function drawRandomPalabra() {
     if (game.palabraPool.length === 0) {
-        game.palabraPool = shuffleArray(palabrasCalientes);
+        return null;
     }
     return game.palabraPool.pop();
 }
