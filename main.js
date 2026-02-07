@@ -143,7 +143,7 @@ function renderWelcome() {
     <div class="welcome-card">
       <h1><span class="welcome-title">¡Bienvenidos!</span></h1>
       <p class="subtitle">Preparad los equipos para empezar la partida.</p>
-      <div class="dev-badge">Por David Wey, David López y Rodrigo García</div>
+      <div class="dev-badge">Por David Wei, David López y Rodrigo García</div>
       <input placeholder="Equipo 1" maxlength="40" />
       <input placeholder="Equipo 2" maxlength="40" />
       <input placeholder="Equipo 3" maxlength="40" />
@@ -665,7 +665,7 @@ function openDevMenu() {
     overlay.innerHTML = `
     <div class="dev-modal" role="dialog" aria-modal="true">
       <button class="dev-close" type="button" aria-label="Cerrar">✕</button>
-      <h3>Menú David Wei</h3>
+      <h3>Menú de rectificación</h3>
       <label class="dev-label">
         Equipo
         <select class="dev-select">
