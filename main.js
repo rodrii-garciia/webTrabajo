@@ -45,6 +45,10 @@ const game = {
     palabraActual: null,
     preguntaPool: [],
     palabraPool: [],
+    preguntaActualIndex: null,
+    palabraActualIndex: null,
+    preguntasPospuestas: [],
+    palabrasPospuestas: [],
     respuestasBloqueadas: [],
     reboteNivel: 0,
     timerRebote: null,
@@ -289,15 +293,19 @@ function renderPalabra() {
   `;
 
     addButton("✔ Correcta (+2)", "green", () => {
-        resolveResultado(principal.nombre, `ha acertado “Palabra caliente” y suma ${POINTS.PALABRA_CORRECTA} puntos.`, POINTS.PALABRA_CORRECTA);
+        consumePalabraActual();
+        resolveResultado(principal.nombre, `ha acertado “Palabra caliente y suma ${POINTS.PALABRA_CORRECTA} puntos.`, POINTS.PALABRA_CORRECTA);
     });
     addButton("🚨 Trampa (−5)", "purple", () => {
+        consumePalabraActual();
         resolveResultado(principal.nombre, `ha hecho trampa y pierde ${Math.abs(POINTS.PALABRA_TRAMPA)} puntos.`, POINTS.PALABRA_TRAMPA);
     });
 }
 
 function renderPregunta() {
-    game.preguntaActual = drawRandomPregunta();
+    if (!game.preguntaActual) {
+        game.preguntaActual = drawRandomPregunta();
+    }
     if (!game.preguntaActual) {
         dom.screen.innerHTML = `
       <h2>No quedan preguntas</h2>
@@ -342,10 +350,13 @@ function renderPregunta() {
         }
 
         if (selectedOption === game.preguntaActual.correcta) {
+            consumePreguntaFromPool();
+            clearPreguntaActual();
             resolveResultado(principal.nombre, `ha acertado la pregunta y suma ${POINTS.PREGUNTA_CORRECTA} puntos.`, POINTS.PREGUNTA_CORRECTA);
             return;
         }
 
+        consumePreguntaFromPool();
         equipos[game.equipoPrincipal].puntos += POINTS.PREGUNTA_INCORRECTA;
         game.lastOutcomeMessage = `${principal.nombre} ha fallado la pregunta y pierde ${Math.abs(POINTS.PREGUNTA_INCORRECTA)} puntos. Se activa Rebote 1.`;
         game.lastOutcomeTeam = principal.nombre;
@@ -388,27 +399,63 @@ function renderRebote1Race() {
     </div>
       `;
 
-    const onRaceKey = (event) => {
-        if (game.reboteRaceWinner !== null) return;
+    const statusEl = dom.screen.querySelector("#race-status");
+    let raceArmed = false;
+    let readyTimeout = null;
+    let autoPickTimeout = null;
 
-        if (event.code === "ControlLeft") {
-            game.reboteRaceWinner = leftTeam;
-        } else if (event.code === "NumpadEnter") {
-            game.reboteRaceWinner = rightTeam;
-        } else {
-            return;
+    const cleanupRace = () => {
+        window.removeEventListener("keydown", onRaceKey);
+        if (readyTimeout) {
+            clearTimeout(readyTimeout);
+            readyTimeout = null;
         }
+        if (autoPickTimeout) {
+            clearTimeout(autoPickTimeout);
+            autoPickTimeout = null;
+        }
+    };
 
-        game.reboteCurrentTeam = game.reboteRaceWinner;
+    const finalizeWinner = (winner, isAutoPick) => {
+        if (game.reboteRaceWinner !== null) return;
+        game.reboteRaceWinner = winner;
+        game.reboteCurrentTeam = winner;
         game.lastOutcomeTeam = equipos[game.reboteCurrentTeam].nombre;
         game.lastOutcomePoints = 0;
-        game.lastOutcomeMessage = `${game.lastOutcomeTeam} ha ganado el rebote. Tiene 20 segundos para responder.`;
-        window.removeEventListener("keydown", onRaceKey);
+        if (isAutoPick) {
+            game.lastOutcomeMessage = `No hubo pulsación a tiempo. ${game.lastOutcomeTeam} gana el rebote automáticamente y tiene 20 segundos para responder.`;
+        } else {
+            game.lastOutcomeMessage = `${game.lastOutcomeTeam} ha ganado el rebote. Tiene 20 segundos para responder.`;
+        }
+        cleanupRace();
         setState(estados.REBOTE1_READY);
     };
 
+    const onRaceKey = (event) => {
+        if (game.reboteRaceWinner !== null) return;
+        if (!raceArmed) return;
+
+        if (event.code === "ControlLeft") {
+            finalizeWinner(leftTeam, false);
+        } else if (event.code === "NumpadEnter") {
+            finalizeWinner(rightTeam, false);
+        } else {
+            return;
+        }
+    };
+
     window.addEventListener("keydown", onRaceKey);
-    game.reboteRaceCleanup = () => window.removeEventListener("keydown", onRaceKey);
+    const readyDelay = Math.floor(Math.random() * 4000) + 1000;
+    readyTimeout = setTimeout(() => {
+        raceArmed = true;
+        statusEl.classList.add("race-status-ready");
+        statusEl.textContent = "¡Ahora! Pulsa para ganar el rebote.";
+        autoPickTimeout = setTimeout(() => {
+            const autoWinner = Math.random() < 0.5 ? leftTeam : rightTeam;
+            finalizeWinner(autoWinner, true);
+        }, 5000);
+    }, readyDelay);
+    game.reboteRaceCleanup = cleanupRace;
 }
 
 function renderRebote1Ready() {
@@ -713,7 +760,6 @@ function updateHubScores(teamIndex) {
 function resolveResultado(teamName, message, points) {
     stopMainTimer();
     equipos[game.equipoPrincipal].puntos += points;
-    game.palabraActual = null;
     game.lastOutcomeTeam = teamName;
     game.lastOutcomePoints = points;
     game.lastOutcomeMessage = `${teamName} ${message}`;
@@ -732,6 +778,7 @@ function resolveBounce(answerIndex) {
         game.lastOutcomeTeam = teamName;
         game.lastOutcomePoints = earned;
         game.lastOutcomeMessage = `${teamName} ha acertado el Rebote ${game.reboteNivel} y suma ${earned} puntos.`;
+        clearPreguntaActual();
         setState(estados.INTERMEDIA);
         return;
     }
@@ -754,6 +801,7 @@ function resolveBounce(answerIndex) {
     game.lastOutcomeTeam = teamName;
     game.lastOutcomePoints = POINTS.REBOTE_2_INCORRECTA;
     game.lastOutcomeMessage = `${teamName} falló en Rebote 2 y pierde ${Math.abs(POINTS.REBOTE_2_INCORRECTA)} puntos.`;
+    clearPreguntaActual();
     setState(estados.INTERMEDIA);
 }
 
@@ -766,6 +814,12 @@ function startRound() {
 
 function changePrincipalTeam() {
     stopMainTimer();
+    if (game.estado === estados.PALABRA) {
+        postponePalabraActual();
+    }
+    if (game.estado === estados.PREGUNTA) {
+        postponePreguntaActual();
+    }
     game.principalRoundsPlayed += 1;
 
     if (game.principalRoundsPlayed >= TOTAL_PRINCIPAL_ROUNDS) {
@@ -799,6 +853,10 @@ function resetGame() {
     game.lastOutcomePoints = 0;
     game.preguntaPool = [];
     game.palabraPool = [];
+    game.preguntaActualIndex = null;
+    game.palabraActualIndex = null;
+    game.preguntasPospuestas = [];
+    game.palabrasPospuestas = [];
     initPools();
     updateMainTimer();
     render();
@@ -828,20 +886,84 @@ function shuffleArray(list) {
 function initPools() {
     game.preguntaPool = shuffleArray(preguntas);
     game.palabraPool = shuffleArray(palabrasCalientes);
+    game.preguntasPospuestas = [];
+    game.palabrasPospuestas = [];
 }
 
 function drawRandomPregunta() {
+    if (game.preguntaPool.length === 0 && game.preguntasPospuestas.length > 0) {
+        game.preguntaPool = shuffleArray(game.preguntasPospuestas);
+        game.preguntasPospuestas = [];
+    }
     if (game.preguntaPool.length === 0) {
         return null;
     }
-    return game.preguntaPool.pop();
+    if (game.preguntaActualIndex === null) {
+        game.preguntaActualIndex = Math.floor(Math.random() * game.preguntaPool.length);
+    }
+    const pregunta = game.preguntaPool[game.preguntaActualIndex];
+    if (game.preguntasPospuestas.length > 0) {
+        game.preguntaPool.push(...game.preguntasPospuestas);
+        game.preguntasPospuestas = [];
+    }
+    return pregunta;
 }
 
 function drawRandomPalabra() {
+    if (game.palabraPool.length === 0 && game.palabrasPospuestas.length > 0) {
+        game.palabraPool = shuffleArray(game.palabrasPospuestas);
+        game.palabrasPospuestas = [];
+    }
     if (game.palabraPool.length === 0) {
         return null;
     }
-    return game.palabraPool.pop();
+    if (game.palabraActualIndex === null) {
+        game.palabraActualIndex = Math.floor(Math.random() * game.palabraPool.length);
+    }
+    const palabra = game.palabraPool[game.palabraActualIndex];
+    if (game.palabrasPospuestas.length > 0) {
+        game.palabraPool.push(...game.palabrasPospuestas);
+        game.palabrasPospuestas = [];
+    }
+    return palabra;
+}
+
+function consumePreguntaFromPool() {
+    if (game.preguntaActualIndex === null) return;
+    game.preguntaPool.splice(game.preguntaActualIndex, 1);
+    game.preguntaActualIndex = null;
+}
+
+function clearPreguntaActual() {
+    game.preguntaActual = null;
+}
+
+function consumePalabraActual() {
+    if (game.palabraActualIndex !== null) {
+        game.palabraPool.splice(game.palabraActualIndex, 1);
+    }
+    game.palabraActualIndex = null;
+    game.palabraActual = null;
+}
+
+function postponePreguntaActual() {
+    if (game.preguntaActualIndex === null) return;
+    const [postponed] = game.preguntaPool.splice(game.preguntaActualIndex, 1);
+    if (postponed) {
+        game.preguntasPospuestas.push(postponed);
+    }
+    game.preguntaActualIndex = null;
+    game.preguntaActual = null;
+}
+
+function postponePalabraActual() {
+    if (game.palabraActualIndex === null) return;
+    const [postponed] = game.palabraPool.splice(game.palabraActualIndex, 1);
+    if (postponed) {
+        game.palabrasPospuestas.push(postponed);
+    }
+    game.palabraActualIndex = null;
+    game.palabraActual = null;
 }
 
 function validateDataOrThrow(payload) {

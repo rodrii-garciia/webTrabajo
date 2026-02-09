@@ -133,9 +133,9 @@
     {
       "texto": "Un contrato:",
       "opciones": [
-        "Puede renovarse manteniendo todo su contenido",
+        "Siempre puede renovarse manteniendo su contenido",
         "Puede ser oral si ambas partes se ponen de acuerdo",
-        "Puede tener una duracion de inferior a 4 semanas solo si es verbal",
+        "Puede tener una duración de inferior a 4 semanas solo si es verbal",
         "Ninguna de las anteriores"
       ],
       "correcta": 3
